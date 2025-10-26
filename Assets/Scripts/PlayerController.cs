@@ -6,20 +6,23 @@ public class PlayerController : MonoBehaviour
 {
 
     [SerializeField] CharacterController controller;
-    [SerializeField] Vector3 playerVelocity;
-    [SerializeField] bool groundedPlayer;
-    [SerializeField] float speed = 5;
-    [SerializeField] float playerSpeed;
-    [SerializeField] float gravityValue;
-    [SerializeField] float rotateSpeed = 5;
-    [SerializeField] float jumpHeight = 1.2f;
-    [SerializeField] bool isJumping;
+    [SerializeField] float speed = 5f;
+    [SerializeField] float gravityValue = -20f;
+    [SerializeField] float jumpForce = 10f;
+    [SerializeField] private float rotationSensitivity = 200f;
 
-  
+    private Vector3 playerVelocity;
+    private bool groundedPlayer;
+    private bool isJumping;
+
+    private float yRotation; 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         gravityValue = -20;
+        playerVelocity = Vector3.zero; 
     }
 
     // Update is called once per frame
@@ -27,18 +30,31 @@ public class PlayerController : MonoBehaviour
     {
         groundedPlayer = controller.isGrounded;
 
-        if (Input.GetKey(KeyCode.Space) && groundedPlayer)
+        if (groundedPlayer && playerVelocity.y < 1)
+        {
+            playerVelocity.y = 0f; // reset vertical velocity when grounded
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && groundedPlayer && !isJumping)
         {
             isJumping = true;
-            playerVelocity.y += 20;
-            
+            playerVelocity.y = jumpForce; // jump force applied once
             StartCoroutine(ResetJump());
         }
 
 
-
         playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
+
+        float movementX = Input.GetAxis("Horizontal");
+        float movementY = Input.GetAxis("Vertical");
+
+        Vector3 movement = (transform.right * movementX + transform.forward * movementY) * speed;
+
+        controller.Move((-movement + playerVelocity) * Time.deltaTime);
+        
+        float mouseX = Input.GetAxis("Mouse X") * rotationSensitivity * Time.deltaTime;
+        yRotation += mouseX;
+        transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
 
     }
 
@@ -48,15 +64,5 @@ public class PlayerController : MonoBehaviour
         isJumping = false;
     }
 
-    void FixedUpdate()
-    {
-
-        float movementX = Input.GetAxis("Horizontal");
-        float movementY = Input.GetAxis("Vertical");
-
-        Vector3 movement = new Vector3(movementX, 0.0f, movementY) * speed * Time.deltaTime;
-
-        transform.position -= movement;
-
-    }
+ 
 }
