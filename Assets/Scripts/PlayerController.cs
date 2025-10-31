@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
 
     [SerializeField] CharacterController controller;
+    [SerializeField] GameObject player;
     [SerializeField] float speed = 5f;
     [SerializeField] float gravityValue = -20f;
     [SerializeField] float jumpForce = 10f;
@@ -55,6 +56,14 @@ public class PlayerController : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X") * rotationSensitivity * Time.deltaTime;
         yRotation += mouseX;
         transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
+
+        if (movement.sqrMagnitude > 0f)
+        {
+            player.transform.LookAt(transform.position + movement);
+            player.transform.Rotate(0, -90, 0);
+            player.transform.rotation.Normalize();
+        }
+
 
     }
 
