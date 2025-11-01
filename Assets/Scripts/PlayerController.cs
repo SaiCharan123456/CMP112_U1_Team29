@@ -1,29 +1,40 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
-
     [SerializeField] CharacterController controller;
     [SerializeField] GameObject player;
+    [SerializeField] GameObject MovingPlayer;
     [SerializeField] float speed = 5f;
     [SerializeField] float gravityValue = -20f;
     [SerializeField] float jumpForce = 10f;
-    [SerializeField] private float rotationSensitivity = 200f;
+    [SerializeField] private float rotationSensitivity = 200f;      
 
     private Vector3 playerVelocity;
     private bool groundedPlayer;
     private bool isJumping;
 
-    private float yRotation; 
+    private float yRotation;
+
+    Rigidbody rb;
+    private Vector3 lastPosition;
+    [SerializeField] float ballRadius = 1f;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        rb = player.GetComponent<Rigidbody>();
+        
         Cursor.lockState = CursorLockMode.Locked;
         gravityValue = -20;
-        playerVelocity = Vector3.zero; 
+        playerVelocity = Vector3.zero;
+        lastPosition = transform.position;
+        player.SetActive(true);
+        MovingPlayer.SetActive(false);
     }
 
     // Update is called once per frame
@@ -59,12 +70,32 @@ public class PlayerController : MonoBehaviour
 
         if (movement.sqrMagnitude > 0f)
         {
-            player.transform.LookAt(transform.position + movement);
-            player.transform.Rotate(0, -90, 0);
-            player.transform.rotation.Normalize();
+            Quaternion targetRotation = Quaternion.LookRotation(movement.normalized, Vector3.up);
+            targetRotation *= Quaternion.Euler(0f, -90f, 0f); // adjust if model is oriented weirdly
+            player.transform.rotation = Quaternion.Slerp(player.transform.rotation, targetRotation, Time.deltaTime * 10f);
         }
 
+        Vector3 displacement = transform.position - lastPosition;
+        float distance = displacement.magnitude;
 
+
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        {
+            player.SetActive(false);
+            MovingPlayer.SetActive(true);
+            // Find axis to rotate around (perpendicular to movement)
+            Vector3 rotationAxis = Vector3.Cross(Vector3.up, displacement.normalized);
+
+            // Calculate rotation angle based on distance
+            float rotationAngle = (distance / ballRadius) * Mathf.Rad2Deg;
+            MovingPlayer.transform.Rotate(rotationAxis, rotationAngle, Space.World);
+        }
+        else
+        {
+            MovingPlayer.SetActive(false);
+            player.SetActive(true);
+        }
+        lastPosition = transform.position;
     }
 
     IEnumerator ResetJump()
