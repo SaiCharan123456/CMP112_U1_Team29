@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class CameraController : MonoBehaviour
 {
 	[SerializeField] private GameObject playerAnchor;
-	[SerializeField] private float sensitivity = 1;
+	[SerializeField] private float sensitivity;
 	private Vector3 offset;
 	private float xRotation;
 	private float yRotation;
@@ -19,10 +19,10 @@ public class CameraController : MonoBehaviour
 	void LateUpdate()
 	{
 		//Vector3 rotationChange = new Vector3(xRotation, yRotation, 0);
-		//transform.position = player.transform.position + offset + rotationChange;
+		//transform.position = playerAnchor.transform.position + offset + rotationChange;
 		
-		transform.rotation = Quaternion.AngleAxis(xRotation * sensitivity, Vector3.up);
-		transform.rotation = Quaternion.AngleAxis(yRotation * sensitivity, Vector3.right);
+		//transform.rotation = Quaternion.AngleAxis(xRotation * sensitivity, Vector3.up);
+		//transform.rotation = Quaternion.AngleAxis(yRotation * sensitivity, Vector3.right);
 	}
 
 	void OnLook(InputValue value)
