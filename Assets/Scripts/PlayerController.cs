@@ -23,6 +23,10 @@ public class PlayerController : MonoBehaviour
     private Vector3 lastPosition;
     [SerializeField] float ballRadius = 1f;
 
+    private AudioSource source;
+
+    [SerializeField] AudioClip rollingClip;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -35,6 +39,8 @@ public class PlayerController : MonoBehaviour
         lastPosition = transform.position;
         player.SetActive(true);
         MovingPlayer.SetActive(false);
+
+        source = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -89,6 +95,9 @@ public class PlayerController : MonoBehaviour
             // Calculate rotation angle based on distance
             float rotationAngle = (distance / ballRadius) * Mathf.Rad2Deg;
             MovingPlayer.transform.Rotate(rotationAxis, rotationAngle, Space.World);
+
+            source.PlayOneShot(rollingClip, 1.0f);
+
         }
         else
         {
