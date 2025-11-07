@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     private AudioSource source;
 
     [SerializeField] AudioClip rollingClip;
-
+    private bool ballSoundPlaying = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
         float distance = displacement.magnitude;
 
 
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.UpArrow))
         {
             player.SetActive(false);
             MovingPlayer.SetActive(true);
@@ -96,16 +96,28 @@ public class PlayerController : MonoBehaviour
             float rotationAngle = (distance / ballRadius) * Mathf.Rad2Deg;
             MovingPlayer.transform.Rotate(rotationAxis, rotationAngle, Space.World);
 
-            source.PlayOneShot(rollingClip, 1.0f);
+            if (!ballSoundPlaying)
+            {
+                source.loop = true;
+                source.PlayOneShot(rollingClip, 0.3f);
+                Debug.Log($"{rollingClip.length}, Calling play one shot ");
+            } 
+            
+            ballSoundPlaying = true;
 
         }
         else
         {
             MovingPlayer.SetActive(false);
             player.SetActive(true);
+
+            ballSoundPlaying = false;
+            source.loop = false;
+            source.Stop();
         }
         lastPosition = transform.position;
     }
+
 
     IEnumerator ResetJump()
     {
