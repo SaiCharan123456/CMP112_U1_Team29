@@ -4,13 +4,15 @@ using UnityEngine;
 public class CollectibleCoin : CollectiblesRoot
 {
 
-    public override void OnTriggerEnter(Collider player)
+    public override void OnTriggerEnter(Collider other)
     {
-        source.PlayOneShot(pickupSound, 1.0f);
-        tempScore += 50;
-        Debug.Log("Collected a coin");
-        Debug.Log(tempScore); //Currently implemented to verify score is being updated uniquely. may not be needed in all collectible scripts
-        Destroy(gameObject);
+        source.PlayOneShot(pickupSound, 1.0f); //Run the mechanics of object collection
+        playerState.instance.score += 50;
+
+        Debug.Log("Collected a coin"); //Log the changes
+        Debug.Log("Score " + playerState.instance.score);
+
+        Destroy(gameObject); //Remove the object
     }
 
 }

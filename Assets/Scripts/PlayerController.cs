@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -11,20 +12,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float jumpForce = 10f;
     [SerializeField] private float rotationSensitivity = 200f;
     [SerializeField] GameObject obstacle;
-    public int playerHealth = 10;
 
     public Vector3 playerVelocity;
     private bool groundedPlayer;
     private bool isJumping;
 
-    private float yRotation; 
+    private float yRotation;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         gravityValue = -20;
-        playerVelocity = Vector3.zero; 
+        playerVelocity = Vector3.zero;
     }
 
     // Update is called once per frame
@@ -53,11 +53,15 @@ public class PlayerController : MonoBehaviour
         Vector3 movement = (transform.right * movementX + transform.forward * movementY) * speed;
 
         controller.Move((-movement + playerVelocity) * Time.deltaTime);
-        
+
         float mouseX = Input.GetAxis("Mouse X") * rotationSensitivity * Time.deltaTime;
         yRotation += mouseX;
         transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
 
+        if (playerState.instance.health < 0)
+        {
+            Destroy(gameObject); //placeholder until a proper death sequence or procedure is created. probably just does this and then reloads the level after a while.
+        }
     }
 
     IEnumerator ResetJump()
@@ -66,15 +70,15 @@ public class PlayerController : MonoBehaviour
         isJumping = false;
     }
 
-    public void OnCollisionEnter(Collision obstacle)
+    void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Player collided with an obstacle!");
-        if (obstacle.gameObject.tag == "Obstacle")
+        if (other.gameObject.CompareTag("Obstacle")) //couldn't get this to work as a regular collision, instead there is a tag around a box collider, simulating a hitbox.
         {
-            playerHealth -= 2;
+            playerState.instance.health -= 1;
             Debug.Log("Player collided with an obstacle!");
-            Debug.Log(playerHealth);
-            playerVelocity *= -1;
+            Debug.Log(playerState.instance.health);
+            playerVelocity *= -0.9f; //reverses the player's motion to move them out the way of the obstacle
         }
     }
+
 }

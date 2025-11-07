@@ -4,15 +4,15 @@ using UnityEngine;
 public class CollectibleHealth : CollectiblesRoot
 {
 
-    public override void OnTriggerEnter(Collider player)
+    public override void OnTriggerEnter(Collider other)
     {
-        source.PlayOneShot(pickupSound, 1.0f);
-        tempScore += 3;
+        source.PlayOneShot(pickupSound, 1.0f); //Run the mechanics of object collection
         Debug.Log("Collected some health");
-        Debug.Log(tempScore); //Currently implemented to verify score is being updated uniquely. may not be needed in all collectible scripts
-        playerHealth += 5;
-        Debug.Log(playerHealth);
-        Destroy(gameObject);
+
+        playerState.instance.health += 5; //Log the changes
+        Debug.Log("Health: " + playerState.instance.health);
+
+        Destroy(gameObject); //Remove the object
     }
 
 }
