@@ -10,8 +10,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float gravityValue = -20f;
     [SerializeField] float jumpForce = 10f;
     [SerializeField] private float rotationSensitivity = 200f;
+    [SerializeField] GameObject obstacle;
+    public int playerHealth = 10;
 
-    private Vector3 playerVelocity;
+    public Vector3 playerVelocity;
     private bool groundedPlayer;
     private bool isJumping;
 
@@ -64,5 +66,15 @@ public class PlayerController : MonoBehaviour
         isJumping = false;
     }
 
- 
+    public void OnCollisionEnter(Collision obstacle)
+    {
+        Debug.Log("Player collided with an obstacle!");
+        if (obstacle.gameObject.tag == "Obstacle")
+        {
+            playerHealth -= 2;
+            Debug.Log("Player collided with an obstacle!");
+            Debug.Log(playerHealth);
+            playerVelocity *= -1;
+        }
+    }
 }

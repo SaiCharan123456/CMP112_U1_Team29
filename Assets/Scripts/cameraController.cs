@@ -19,7 +19,7 @@ public class CameraController : MonoBehaviour
 	void LateUpdate()
 	{
 		//Vector3 rotationChange = new Vector3(xRotation, yRotation, 0);
-		//transform.position = playerAnchor.transform.position + offset + rotationChange;
+		transform.position = playerAnchor.transform.position + offset;
 		
 		//transform.rotation = Quaternion.AngleAxis(xRotation * sensitivity, Vector3.up);
 		//transform.rotation = Quaternion.AngleAxis(yRotation * sensitivity, Vector3.right);
