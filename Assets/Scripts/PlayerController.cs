@@ -2,6 +2,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,12 +13,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float gravityValue = -20f;
     [SerializeField] float jumpForce = 10f;
     [SerializeField] private float rotationSensitivity = 200f;      
+    [SerializeField] Camera playerCamera;
 
     private Vector3 playerVelocity;
     private bool groundedPlayer;
     private bool isJumping;
 
     private float yRotation;
+    private float xRotation;
 
     Rigidbody rb;
     private Vector3 lastPosition;
@@ -72,7 +75,16 @@ public class PlayerController : MonoBehaviour
         
         float mouseX = Input.GetAxis("Mouse X") * rotationSensitivity * Time.deltaTime;
         yRotation += mouseX;
+
+        float mouseScroll = Input.GetAxis("Mouse ScrollWheel");
+        xRotation += mouseScroll * rotationSensitivity; // Invert the scrolling if needed
+
+        // Clamp the up/down rotation to prevent flipping the camera
+        xRotation = Mathf.Clamp(xRotation, -80f, 30f); // Adjust the range if necessary
+
+
         transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
+        playerCamera.transform.localRotation = Quaternion.Euler(xRotation, 180f, 0f);
 
         if (movement.sqrMagnitude > 0f)
         {
@@ -100,7 +112,6 @@ public class PlayerController : MonoBehaviour
             {
                 source.loop = true;
                 source.PlayOneShot(rollingClip, 0.3f);
-                Debug.Log($"{rollingClip.length}, Calling play one shot ");
             } 
             
             ballSoundPlaying = true;
