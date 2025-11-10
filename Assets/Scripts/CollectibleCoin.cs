@@ -4,15 +4,19 @@ using UnityEngine;
 public class CollectibleCoin : CollectiblesRoot
 {
 
-    public override void OnTriggerEnter(Collider other)
-    {
-        source.PlayOneShot(pickupSound, 1.0f); //Run the mechanics of object collection
-        GameManager.instance.score += 50;
+	public override void OnTriggerEnter(Collider other)
+	{
+		if (other.gameObject.CompareTag("Player"))
+		{
+			//Wait();
+			source.PlayOneShot(pickupSound, 1.0f); //Run the mechanics of object collection
+			GameManager.instance.score += 50;
 
-        Debug.Log("Collected a coin"); //Log the changes
-        Debug.Log("Score: " + GameManager.instance.score);
+			Debug.Log("Collected a coin"); //Log the changes
+			Debug.Log("Score: " + GameManager.instance.score);
 
-        Destroy(gameObject); //Remove the object
-    }
+            Destroy(gameObject); //Remove the object
+		}
+	}
 
 }

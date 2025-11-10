@@ -121,8 +121,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_Resource: {fileID: 8300000, guid: 07c219729b016d5409ac65f8ce63bd39, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -219,18 +219,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80854d750a0753c4898aa7bfb1e6c3cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 0}
-  speed: 5
-  gravityValue: -20
-  jumpForce: 10
-  rotationSensitivity: 200
-  obstacle: {fileID: 0}
-  playerHealth: 10
-  score: 0
-  playerState: {fileID: 0}
-  playerVelocity: {x: 0, y: 0, z: 0}
-  m_MyX: 0
-  player: {fileID: 0}
-  tempScore: 0
-  source: {fileID: 0}
-  pickupSound: {fileID: 0}
+  player: {fileID: 7474051030827820752, guid: 1981127de24799e4cad55767e5aef2ef, type: 3}
+  source: {fileID: -2615004679796249514}
+  pickupSound: {fileID: 8300000, guid: 07c219729b016d5409ac65f8ce63bd39, type: 3}

@@ -6,13 +6,16 @@ public class CollectibleHealth : CollectiblesRoot
 
     public override void OnTriggerEnter(Collider other)
     {
-        source.PlayOneShot(pickupSound, 1.0f); //Run the mechanics of object collection
-        Debug.Log("Collected some health");
+        if (other.gameObject.CompareTag("Player"))
+        {
+            source.PlayOneShot(pickupSound, 1.0f); //Run the mechanics of object collection
+            Debug.Log("Collected some health");
 
-        GameManager.instance.health += 1; //Log the changes
-        Debug.Log("Health: " + GameManager.instance.health);
+            GameManager.instance.health += 1; //Log the changes
+            Debug.Log("Health: " + GameManager.instance.health);
 
-        Destroy(gameObject); //Remove the object
+            Destroy(gameObject); //Remove the object
+        }
     }
 
 }
