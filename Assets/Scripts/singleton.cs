@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class playerState : MonoBehaviour
+public class GameState : MonoBehaviour
 {
-    public static playerState instance;
+    public static GameState instance;
     public int health = 10;
     public int score = 0;
     public int keysCollected = 0;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-//Inherits from a root class to make more efficient the use of multiple collectibles
+//Inherits from a base class to make more efficient the use of multiple collectibles
 public class CollectibleHealth : CollectiblesRoot
 {
 
@@ -9,8 +9,8 @@ public class CollectibleHealth : CollectiblesRoot
         source.PlayOneShot(pickupSound, 1.0f); //Run the mechanics of object collection
         Debug.Log("Collected some health");
 
-        playerState.instance.health += 5; //Log the changes
-        Debug.Log("Health: " + playerState.instance.health);
+        GameManager.instance.health += 1; //Log the changes
+        Debug.Log("Health: " + GameManager.instance.health);
 
         Destroy(gameObject); //Remove the object
     }

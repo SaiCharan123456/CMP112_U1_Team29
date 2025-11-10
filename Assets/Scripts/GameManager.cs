@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-
-    public static int Health = 3;
-    public static int Score = 0;
-    public static int Coins = 0;
-    public static int Keys = 0;
+    public static GameManager instance;
+    public int health = 3;
+    public int score = 0;
+    public int coins = 0;
+    public int keys = 0;
     private bool isGameOver = false;
     private bool isGameWon = false;
 
@@ -19,17 +19,27 @@ public class GameManager : MonoBehaviour
         
     }
 
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else Destroy(gameObject);
+    }
+
     // Update is called once per frame
     void Update()
     {
 
-        if (Health <= 0 && !isGameOver)
+        if (health <= 0 && !isGameOver)
         {
             isGameOver = true;
             Debug.Log("Game Over!");
             // Additional game over logic here
         }
-        if (Keys == 3 && !isGameWon)
+        if (keys == 3 && !isGameWon)
         {
             isGameWon = true;
             Debug.Log("You Win!");
@@ -37,4 +47,5 @@ public class GameManager : MonoBehaviour
         }
 
     }
+
 }

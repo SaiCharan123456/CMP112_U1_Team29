@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rotationSensitivity = 200f;      
     [SerializeField] Camera playerCamera;
 
-    private Vector3 playerVelocity;
+    public Vector3 playerVelocity;
     private bool groundedPlayer;
     private bool isJumping;
 
