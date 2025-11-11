@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject MovingPlayer;
     [SerializeField] float speed = 5f;
     [SerializeField] float gravityValue = -20f;
-    [SerializeField] float jumpForce = 10f;
+    [SerializeField] float jumpForce = 5f;
     [SerializeField] private float rotationSensitivity = 200f;      
     [SerializeField] Camera playerCamera;
 
@@ -30,6 +30,9 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] AudioClip rollingClip;
     private bool ballSoundPlaying = false;
+
+    private Transform currentPlatform;
+    private Vector3 lastPlatformPosition;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -136,5 +139,26 @@ public class PlayerController : MonoBehaviour
         isJumping = false;
     }
 
- 
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.collider.CompareTag("MovingPlatform"))
+        {
+            currentPlatform = hit.collider.transform;
+            lastPlatformPosition = currentPlatform.position;
+        }
+    }
+
+    void LateUpdate()
+    {
+        if (currentPlatform != null)
+        {
+            Vector3 platformDelta = currentPlatform.position - lastPlatformPosition;
+            controller.Move(platformDelta);
+            lastPlatformPosition = currentPlatform.position;
+        }
+
+        if (!groundedPlayer)
+            currentPlatform = null;
+    }
 }
