@@ -9,7 +9,7 @@ public class CollectibleKey : CollectiblesRoot
         if (other.gameObject.CompareTag("Player"))
         {
             GameObject sound = Instantiate(audioPrefab); //Run the mechanics of object collection
-            GameManager.instance.score += 200;
+            GameManager.instance.score += 50;
             GameManager.instance.keys += 1;
 
             Debug.Log("Collected a key"); //Log the changes

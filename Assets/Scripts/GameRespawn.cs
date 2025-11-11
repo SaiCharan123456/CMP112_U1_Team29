@@ -18,7 +18,7 @@ public class GameReswan : MonoBehaviour
         if (transform.position.y < -3)
         {
             transform.position = PlayerPosition.position;
-            GameManager.Health = GameManager.Health - 1;
+            GameManager.instance.health = GameManager.instance.health - 1;
         }
     }
 }

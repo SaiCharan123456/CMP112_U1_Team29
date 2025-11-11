@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,6 +15,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float jumpForce = 5f;
     [SerializeField] private float rotationSensitivity = 200f;      
     [SerializeField] Camera playerCamera;
+    public AudioSource hurtSource;
+    public AudioClip damageSound;
+    
 
     public Vector3 playerVelocity;
     private bool groundedPlayer;
@@ -38,7 +42,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = player.GetComponent<Rigidbody>();
-        
+        hurtSource = GetComponent<AudioSource>();
+
         Cursor.lockState = CursorLockMode.Locked;
         gravityValue = -20;
         playerVelocity = Vector3.zero;
@@ -160,5 +165,17 @@ public class PlayerController : MonoBehaviour
 
         if (!groundedPlayer)
             currentPlatform = null;
+    }
+
+    void OnTriggerEnter(Collider other) //I would love to have this as an independent script but that didn't work for me
+    {
+        if (other.gameObject.CompareTag("Obstacle")) //couldn't get this to work as a regular collision, instead there is a tag around a box collider, simulating a hitbox.
+        {
+            GameManager.instance.health -= 1;
+            hurtSource.PlayOneShot(damageSound, 1.0f);
+            Debug.Log("Player collided with an obstacle!");
+            Debug.Log(GameManager.instance.health);
+            playerVelocity *= -1.2f; //reverses the player's motion to move them out the way of the obstacle
+        }
     }
 }

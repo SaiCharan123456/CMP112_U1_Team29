@@ -1,6 +1,7 @@
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -19,30 +20,15 @@ public class GameManager : MonoBehaviour
     private float remainingTime;
     private bool isRunning = false;
 
-    
-
-    public static int Health;
-    public static int Score = 0;
-    public static int Coins = 0;
-    public static int Keys = 0;
+    public static GameManager instance;
+    public int health;
+    public int score = 0;
+    public int coins = 0;
+    public int keys = 0;
     private bool isGameOver = false;
     private bool isGameWon = false;
 
     [SerializeField] GameObject Enddoor;
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        Health = 4;
-        heart0.gameObject.SetActive(true);
-        heart1.gameObject.SetActive(true);
-        heart2.gameObject.SetActive(true);
-        heart3.gameObject.SetActive(true);
-
-        remainingTime = startTime;
-        StartTimer();
-    }
 
     private void Awake()
     {
@@ -52,6 +38,19 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         else Destroy(gameObject);
+    }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        health = 4;
+        heart0.gameObject.SetActive(true);
+        heart1.gameObject.SetActive(true);
+        heart2.gameObject.SetActive(true);
+        heart3.gameObject.SetActive(true);
+
+        remainingTime = startTime;
+        StartTimer();
     }
 
     // Update is called once per frame
@@ -72,10 +71,10 @@ public class GameManager : MonoBehaviour
             UpdateTimerDisplay();
         }
 
-        scoreText.text = Score.ToString();
-        coinText.text = Coins.ToString();
+        scoreText.text = score.ToString();
+        coinText.text = coins.ToString();
 
-        switch (Health)
+        switch (health)
         {
             case 4:
                 heart0.gameObject.SetActive(true);
@@ -123,11 +122,11 @@ public class GameManager : MonoBehaviour
                 PauseGame();
         }
 
-        if (Health <= 0 && !isGameOver)
+        if (health <= 0 && !isGameOver)
         {
             isGameOver = true;
             Debug.Log("Game Over!");
-            // Additional game over logic here
+            //Additional game over logic here
         }
         if (keys == 3 && !isGameWon)
         {

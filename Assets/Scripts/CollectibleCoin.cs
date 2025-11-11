@@ -10,7 +10,7 @@ public class CollectibleCoin : CollectiblesRoot
 		{
 			//Wait();
 			GameObject sound = Instantiate(audioPrefab); //Run the mechanics of object collection
-			GameManager.instance.score += 50;
+			GameManager.instance.score += 10;
 
 			Debug.Log("Collected a coin"); //Log the changes
 			Debug.Log("Score: " + GameManager.instance.score);
