@@ -4,8 +4,7 @@ using UnityEngine;
 public class CollectiblesRoot : MonoBehaviour
 {
     [SerializeField] GameObject player;
-    public AudioSource source;
-    public AudioClip pickupSound;
+    public GameObject audioPrefab;
 
     // Update is called once per frame
     public virtual void Update() //currently has no overwrites, implemented as virtual anyway in case a future collectible should need it

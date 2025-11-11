@@ -9,7 +9,7 @@ public class CollectibleCoin : CollectiblesRoot
 		if (other.gameObject.CompareTag("Player"))
 		{
 			//Wait();
-			source.PlayOneShot(pickupSound, 1.0f); //Run the mechanics of object collection
+			GameObject sound = Instantiate(audioPrefab); //Run the mechanics of object collection
 			GameManager.instance.score += 50;
 
 			Debug.Log("Collected a coin"); //Log the changes

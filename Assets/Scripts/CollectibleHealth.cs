@@ -8,7 +8,7 @@ public class CollectibleHealth : CollectiblesRoot
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            source.PlayOneShot(pickupSound, 1.0f); //Run the mechanics of object collection
+            GameObject sound = Instantiate(audioPrefab); //Run the mechanics of object collection
             Debug.Log("Collected some health");
 
             GameManager.instance.health += 1; //Log the changes

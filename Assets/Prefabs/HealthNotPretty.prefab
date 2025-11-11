@@ -220,5 +220,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 7474051030827820752, guid: 1981127de24799e4cad55767e5aef2ef, type: 3}
+  audioPrefab: {fileID: 8202109453008851850, guid: 20298f5e649a4974e97642e2fc6bdb26, type: 3}
   source: {fileID: -2615004679796249514}
   pickupSound: {fileID: 8300000, guid: 07c219729b016d5409ac65f8ce63bd39, type: 3}

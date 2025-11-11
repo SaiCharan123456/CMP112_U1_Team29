@@ -8,7 +8,7 @@ public class CollectibleKey : CollectiblesRoot
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            source.PlayOneShot(pickupSound, 1.0f); //Run the mechanics of object collection
+            GameObject sound = Instantiate(audioPrefab); //Run the mechanics of object collection
             GameManager.instance.score += 200;
             GameManager.instance.keys += 1;
 
